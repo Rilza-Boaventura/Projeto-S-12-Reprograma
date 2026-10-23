@@ -101,13 +101,67 @@ grid.addEventListener("click", e => {
   dest.value = b.dataset.id; desenharDatas(); calcular();
   document.getElementById("orcamento").scrollIntoView();
 });
-document.getElementById("form").onsubmit = e => {
+document.getElementById("form").onsubmit = async e => {
   e.preventDefault();
-  const v = document.getElementById("email").value.trim(), m = document.getElementById("msg");
+  const email = document.getElementById("email").value.trim();
+  const msg = document.getElementById("msg");
   const p = pacotes.find(x => x.local_id === Number(dest.value));
-  m.textContent = /^\S+@\S+\.\S+$/.test(v)
-    ? `Pedido enviado para ${p.nome}. Respondemos em até 24 horas.`
-    : "Digite um e-mail válido, como nome@email.com.";
+  const d = datas.find(x => x.id === Number(dataSel.value));
+  const n = Number(pax.value);
+
+  if (!p) {
+    msg.textContent = "Selecione um destino válido.";
+    return;
+  }
+  if (!/^\\S+@\\S+\\.\\S+$/.test(email)) {
+    msg.textContent = "Digite um e-mail válido, como nome@email.com.";
+    return;
+  }
+  if (!d || !d.id) {
+    msg.textContent = "Selecione uma data de saída disponível.";
+    return;
+  }
+  if (!Number.isInteger(n) || n < 1 || n > 10 || n > d.vagas) {
+    msg.textContent = "Informe uma quantidade de viajantes válida para as vagas disponíveis.";
+    return;
+  }
+
+  msg.textContent = "Enviando sua solicitação...";
+  try {
+    const payload = {
+      local_id: Number(p.local_id),
+      data_disponivel_id: Number(d.id),
+      data_saida: d.data_saida,
+      data_volta: d.data_volta,
+      viajantes: n,
+      email,
+      preco_estimado: Number((p.preco_final * n).toFixed(2)),
+      status: "novo"
+    };
+    const resposta = await fetch(`${SUPABASE_URL}/rest/v1/solicitacoes_orcamento`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation"
+      },
+      body: JSON.stringify(payload)
+    });
+    const texto = await resposta.text();
+    if (!resposta.ok) {
+      let detalhe = texto;
+      try {
+        const erro = JSON.parse(texto);
+        detalhe = erro.message || erro.details || erro.hint || texto;
+      } catch (_) {}
+      throw new Error(`Erro ${resposta.status}: ${detalhe}`);
+    }
+    msg.textContent = `Solicitação registrada com sucesso! Código: ${JSON.parse(texto)[0]?.id || "confirmado"}. Responderemos em até 24 horas.`;
+  } catch (erro) {
+    console.error("Falha ao gravar solicitação no Supabase:", erro);
+    msg.textContent = "Não foi possível gravar sua solicitação. " + erro.message;
+  }
 };
 
 iniciar();
