@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rota Brasil | Agência de Viagens</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="onda" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0 55Q25 35 50 55T100 55T150 55T200 55V100H0Z"/></symbol>
+<symbol id="duna" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0 100V70Q50 25 100 65T200 50V100Z"/></symbol>
+<symbol id="montanha" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0 100L50 30 90 80 130 20 200 100Z"/></symbol>
+<symbol id="morro" viewBox="0 0 200 100" preserveAspectRatio="none"><path d="M0 100V75Q40 15 80 70Q100 50 120 70Q160 25 200 75V100Z"/></symbol>
+<symbol id="mata" viewBox="0 0 200 100" preserveAspectRatio="none"><circle cx="30" cy="55" r="30"/><circle cx="85" cy="50" r="34"/><circle cx="145" cy="55" r="32"/><circle cx="190" cy="62" r="26"/><rect y="70" width="200" height="30"/></symbol>
+</svg>
+
+<header>
+  <a class="logo" href="#topo">Rota Brasil</a>
+  <nav aria-label="Principal"><a href="#destinos">Destinos</a><a href="#orcamento">Orçamento</a></nav>
+</header>
+
+<main id="topo">
+  <div class="hero">
+    <div class="sun" aria-hidden="true"></div>
+    <h1>O Brasil inteiro cabe na sua próxima viagem.</h1>
+    <p>Pacotes com hotel, passeios e traslados para as praias, dunas, florestas e serras mais bonitas do país.</p>
+    <a class="btn" href="#destinos">Ver destinos</a>
+    <svg viewBox="0 0 200 100" preserveAspectRatio="none" aria-hidden="true"><path fill="#0a5c6b" d="M0 60Q25 40 50 60T100 60T150 60T200 60V100H0Z"/><path fill="#073f4a" d="M0 78Q25 62 50 78T100 78T150 78T200 78V100H0Z"/></svg>
+  </div>
+
+  <section id="destinos">
+    <h2>Escolha seu destino</h2>
+    <p class="lead">Todos os pacotes incluem 5 noites de hospedagem, café da manhã e passeios principais.</p>
+    <div class="filters" role="group" aria-label="Filtrar por região">
+      <button aria-pressed="true" data-f="todas">Todas</button>
+      <button aria-pressed="false" data-f="Nordeste">Nordeste</button>
+      <button aria-pressed="false" data-f="Sudeste">Sudeste</button>
+      <button aria-pressed="false" data-f="Sul">Sul</button>
+      <button aria-pressed="false" data-f="Norte">Norte</button>
+      <button aria-pressed="false" data-f="Centro-Oeste">Centro-Oeste</button>
+    </div>
+    <p class="status" id="status" role="status">Carregando destinos...</p>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="quote" id="orcamento">
+    <h2>Calcule sua viagem</h2>
+    <p class="lead">Escolha o destino e o número de viajantes para ver uma estimativa. Valores a partir de, por pessoa, em quarto duplo.</p>
+    <form id="form" novalidate>
+      <label>Destino<select id="dest"></select></label>
+      <label>Data de saída<select id="data"></select></label>
+      <label>Viajantes<input id="pax" type="number" min="1" max="10" value="2"></label>
+      <label>Seu e-mail<input id="email" type="email" placeholder="nome@email.com"></label>
+      <div class="total" id="total" aria-live="polite"></div>
+      <button class="btn" type="submit">Pedir proposta</button>
+      <p class="msg" id="msg" role="status"></p>
+    </form>
+  </section>
+</main>
+
+<footer><span>© 2026 Rota Brasil Viagens</span><span>Preços ilustrativos para fins de demonstração</span></footer>
+
+<script src="script.js"></script>
+</body>
+</html>
