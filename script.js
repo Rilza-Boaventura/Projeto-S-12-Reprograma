@@ -143,7 +143,7 @@ document.getElementById("form").onsubmit = async e => {
       headers: {
         apikey: SUPABASE_KEY,
         "Content-Type": "application/json",
-        Prefer: "return=representation"
+        Prefer: "return=minimal"
       },
       body: JSON.stringify(payload)
     });
@@ -156,7 +156,7 @@ document.getElementById("form").onsubmit = async e => {
       } catch (_) {}
       throw new Error(`Erro ${resposta.status}: ${detalhe}`);
     }
-    msg.textContent = `Solicitação registrada com sucesso! Código: ${JSON.parse(texto)[0]?.id || "confirmado"}. Responderemos em até 24 horas.`;
+    msg.textContent = "Solicitação registrada com sucesso! Responderemos em até 24 horas.";
   } catch (erro) {
     console.error("Falha ao gravar solicitação no Supabase:", erro);
     msg.textContent = "Não foi possível gravar sua solicitação. " + erro.message;
