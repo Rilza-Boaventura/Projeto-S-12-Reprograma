@@ -113,7 +113,7 @@ document.getElementById("form").onsubmit = async e => {
     msg.textContent = "Selecione um destino válido.";
     return;
   }
-  if (!/^\\S+@\\S+\\.\\S+$/.test(email)) {
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
     msg.textContent = "Digite um e-mail válido, como nome@email.com.";
     return;
   }
