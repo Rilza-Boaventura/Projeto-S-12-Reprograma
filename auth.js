@@ -44,7 +44,16 @@ document.getElementById("login-form").addEventListener("submit", async event => 
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value;
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  if (error) return setAuthMessage("Não foi possível entrar. Confira o e-mail e a senha e tente novamente.", true);
+  if (error) {
+    console.error("Erro de login Supabase:", error);
+    const messages = {
+      invalid_credentials: "E-mail ou senha incorretos. Se necessário, use “Esqueci minha senha” para criar uma nova senha.",
+      email_not_confirmed: "O e-mail ainda não foi confirmado. Confira sua caixa de entrada e a pasta de spam.",
+      user_not_found: "Não encontramos uma conta com esse e-mail. Confira o endereço digitado.",
+      too_many_requests: "Muitas tentativas de login. Aguarde alguns minutos e tente novamente."
+    };
+    return setAuthMessage(messages[error.code] || `Falha no login (${error.code || "erro"}): ${error.message}`, true);
+  }
   await refreshAccount(data.session);
   setAuthMessage("Login realizado com sucesso!");
 });
