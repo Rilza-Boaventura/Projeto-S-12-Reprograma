@@ -4,7 +4,7 @@ const SUPABASE_KEY = "sb_publishable_7Y2Nzbf234Q4VRsIwi4cBA_MPdBPTBQ";
 
 async function api(caminho) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${caminho}`, {
-    headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    headers: { apikey: SUPABASE_KEY }
   });
   if (!r.ok) throw new Error("Erro " + r.status);
   return r.json();
@@ -142,7 +142,6 @@ document.getElementById("form").onsubmit = async e => {
       method: "POST",
       headers: {
         apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
         "Content-Type": "application/json",
         Prefer: "return=representation"
       },
