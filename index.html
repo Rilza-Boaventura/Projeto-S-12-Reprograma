@@ -18,7 +18,7 @@
 
 <header>
   <a class="logo" href="#topo">Rota Brasil</a>
-  <nav aria-label="Principal"><a href="#destinos">Destinos</a><a href="#orcamento">Orçamento</a><a href="testar-supabase.html">Teste Supabase</a></nav>
+  <nav aria-label="Principal"><a href="#destinos">Destinos</a><a href="#orcamento">Orçamento</a><a href="#conta">Minha conta</a></nav>
 </header>
 
 <main id="topo">
@@ -45,6 +45,54 @@
     <div class="grid" id="grid"></div>
   </section>
 
+  <section class="account" id="conta">
+    <h2>Minha conta</h2>
+    <p class="lead">Entre ou crie sua conta para acompanhar seus pedidos de orçamento.</p>
+    <div id="auth-signed-out">
+      <div class="auth-tabs" role="group" aria-label="Opções de acesso">
+        <button type="button" class="auth-tab active" data-auth-view="login">Entrar</button>
+        <button type="button" class="auth-tab" data-auth-view="signup">Criar conta</button>
+      </div>
+      <form id="login-form" class="auth-form">
+        <label>E-mail<input id="login-email" type="email" autocomplete="email" required></label>
+        <label>Senha<input id="login-password" type="password" autocomplete="current-password" minlength="8" required></label>
+        <button class="btn" type="submit">Entrar</button>
+        <button class="text-button" type="button" id="show-recovery">Esqueci minha senha</button>
+      </form>
+      <form id="signup-form" class="auth-form" hidden>
+        <label>Nome completo<input id="signup-name" type="text" autocomplete="name" maxlength="100" required></label>
+        <label>E-mail<input id="signup-email" type="email" autocomplete="email" required></label>
+        <label>Senha (mínimo 8 caracteres)<input id="signup-password" type="password" autocomplete="new-password" minlength="8" required></label>
+        <button class="btn" type="submit">Criar conta</button>
+      </form>
+      <form id="recovery-form" class="auth-form" hidden>
+        <label>E-mail cadastrado<input id="recovery-email" type="email" autocomplete="email" required></label>
+        <button class="btn" type="submit">Enviar link de recuperação</button>
+        <button class="text-button" type="button" data-auth-view="login">Voltar ao login</button>
+      </form>
+      <form id="new-password-form" class="auth-form" hidden>
+        <label>Nova senha (mínimo 8 caracteres)<input id="new-password" type="password" autocomplete="new-password" minlength="8" required></label>
+        <button class="btn" type="submit">Salvar nova senha</button>
+      </form>
+    </div>
+    <div id="auth-signed-in" hidden>
+      <p id="welcome-user" role="status"></p>
+      <div class="account-actions">
+        <button type="button" class="btn" id="refresh-requests">Atualizar minhas solicitações</button>
+        <button type="button" class="text-button" id="logout-button">Sair da conta</button>
+      </div>
+      <h3>Minhas solicitações</h3>
+      <p class="muted-note">Aqui aparecem os pedidos enviados enquanto você estava conectado.</p>
+      <div class="table-wrap"><table><thead><tr><th>Nº</th><th>Data</th><th>Destino</th><th>Viajantes</th><th>Estimativa</th><th>Status</th></tr></thead><tbody id="my-requests-body"><tr><td colspan="6">Entre para consultar suas solicitações.</td></tr></tbody></table></div>
+      <section id="admin-panel" class="admin-panel" hidden>
+        <h3>Painel administrativo</h3>
+        <p class="muted-note">Área restrita a contas cadastradas como administradoras no banco de dados.</p>
+        <div class="table-wrap"><table><thead><tr><th>Nº</th><th>Data</th><th>E-mail</th><th>Destino</th><th>Viajantes</th><th>Estimativa</th><th>Status</th><th>Ação</th></tr></thead><tbody id="admin-requests-body"></tbody></table></div>
+      </section>
+    </div>
+    <p id="auth-message" class="msg auth-message" role="status" aria-live="polite"></p>
+  </section>
+
   <section class="quote" id="orcamento">
     <h2>Calcule sua viagem</h2>
     <p class="lead">Escolha o destino e o número de viajantes para ver uma estimativa. Valores a partir de, por pessoa, em quarto duplo.</p>
@@ -62,6 +110,7 @@
 
 <footer><span>© 2026 Rota Brasil Viagens</span><span>Preços ilustrativos para fins de demonstração</span><a href="testar-supabase.html">Abrir painel de teste do Supabase</a></footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
 </body>
 </html>
