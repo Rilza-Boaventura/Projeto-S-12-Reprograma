@@ -1,6 +1,10 @@
 // Conexão com o Supabase (a chave "publishable" é pública; quem protege os dados é o RLS)
 const SUPABASE_URL = "https://sunasnvfjsmyuwfqpttr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_7Y2Nzbf234Q4VRsIwi4cBA_MPdBPTBQ";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let currentUser = null;
+let currentSession = null;
+let currentIsAdmin = false;
 
 async function api(caminho) {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${caminho}`, {
@@ -136,14 +140,16 @@ document.getElementById("form").onsubmit = async e => {
       viajantes: n,
       email,
       preco_estimado: Number((p.preco_final * n).toFixed(2)),
-      status: "novo"
+      status: "novo",
+      user_id: currentUser ? currentUser.id : null
     };
     const resposta = await fetch(`${SUPABASE_URL}/rest/v1/solicitacoes_orcamento`, {
       method: "POST",
       headers: {
         apikey: SUPABASE_KEY,
         "Content-Type": "application/json",
-        Prefer: "return=minimal"
+        Prefer: "return=minimal",
+        ...(currentSession ? { Authorization: `Bearer ${currentSession.access_token}` } : {})
       },
       body: JSON.stringify(payload)
     });
